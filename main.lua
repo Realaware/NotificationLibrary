@@ -88,7 +88,7 @@ end
 function CreateNotiItem(Library, Config: NotificationProps)
     if (Library.Config.MaxItems and Library.Config.MaxItems == #Library.Notifications) then return end;
     local Container = CreateInstance('Frame', {
-        Name = tostring(math.random(12507152871258)),
+        Name = tostring(math.random(12507152858)),
         AnchorPoint = Vector2.new(1, 0.5),
         Parent = Library.Container,
         BackgroundColor3 = Color3.fromRGB(22, 22, 22),
