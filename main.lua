@@ -109,7 +109,7 @@ function CreateNotiItem(Library, Config: NotificationProps)
             Text = Config.Title,
         }, {
             CreateInstance('UIPadding', {
-                PaddingRight = UDim.new(0, 5),
+                PaddingLeft = UDim.new(0, 5)
             })
         }),
         CreateInstance('Frame', {
@@ -132,9 +132,8 @@ function CreateNotiItem(Library, Config: NotificationProps)
             TextSize = 15,
         }, {
             CreateInstance('UIPadding', {
-                PaddingLeft = UDim.new(0, 5),
                 PaddingTop = UDim.new(0, 3),
-                PaddingRight = UDim.new(0, 5),
+                PaddingLeft = UDim.new(0, 5),
             })
         }),
         CreateInstance('UICorner', {
@@ -154,9 +153,9 @@ function CreateNotiItem(Library, Config: NotificationProps)
     local TweenSize = {0, 0, 0, 65};
 
     if (Size.X > Size2.X) then
-        TweenSize[2] = math.clamp(Size.X, MinSize[2], math.huge);
+        TweenSize[2] = math.clamp(Size.X + 10, MinSize[2], math.huge);
     elseif (Size.X < Size2.X) then
-        TweenSize[2] = math.clamp(Size2.X, MinSize[2], math.huge);
+        TweenSize[2] = math.clamp(Size2.X + 10, MinSize[2], math.huge);
     end
 
     wait(.05);
