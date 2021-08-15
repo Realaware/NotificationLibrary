@@ -160,11 +160,11 @@ function CreateNotiItem(Library, Config: NotificationProps)
 
     wait(.05);
     Tween(Container, { Size = UDim2.new(unpack(TweenSize)) }, 0.3).Completed:Connect(function()
-        Tween(Container.ProgressBar, { Size = UDim2.new(1, 0, 0, 2) }, Duration or 5);
-        wait(Config.Duration or 5);
-        Tween(Container, { Size = UDim2.new(0, 0, 0, 65) }, 0.7);
-        wait(.7);
-        Container:Destroy();
+        Tween(Container.ProgressBar, { Size = UDim2.new(1, 0, 0, 2) }, Duration or 5).Completed:Connect(function()
+            Tween(Container, { Size = UDim2.new(0, 0, 0, 65) }, 0.7).Completed:Connect(function()
+                Container:Destroy();
+            end)
+        end)
     end)
     
     return {
