@@ -15,7 +15,7 @@ Example code
       Title: string,
       Content: string,
       Duration: number,
-      Bar color( i didnt make this ): Color3
+      Bar color: Color3
    });
    
    
