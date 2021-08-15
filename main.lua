@@ -59,9 +59,8 @@ function Library.new(Config: BasicProps)
         for Index, Value in pairs (Notifications) do
             local Item: Frame = Value.Container;
             if (Item) then
-                if (child.Name == Value.Container.Name) then
+                if (child.Name == Item.Name) then
                     table.remove(Notifications, Index);
-                    return;
                 end
                 local PaddingItem = Config.PaddingItem or 5;
 
