@@ -109,7 +109,8 @@ function CreateNotiItem(Library, Config: NotificationProps)
             Text = Config.Title,
         }, {
             CreateInstance('UIPadding', {
-                PaddingLeft = UDim.new(0, 5)
+                PaddingLeft = UDim.new(0, 5),
+                PaddingRight = UDim.new(0, 5),
             })
         }),
         CreateInstance('Frame', {
@@ -133,7 +134,8 @@ function CreateNotiItem(Library, Config: NotificationProps)
         }, {
             CreateInstance('UIPadding', {
                 PaddingLeft = UDim.new(0, 5),
-                PaddingTop = UDim.new(0, 3)
+                PaddingTop = UDim.new(0, 3),
+                PaddingRight = UDim.new(0, 5),
             })
         }),
         CreateInstance('UICorner', {
