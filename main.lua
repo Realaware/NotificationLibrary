@@ -43,8 +43,6 @@ function Library.new(Config: BasicProps)
         })
     })
 
-    
-
     Container.Container.ChildAdded:Connect(function()
         wait(.2);
         for Index, Value in pairs (Notifications) do
@@ -57,10 +55,14 @@ function Library.new(Config: BasicProps)
         end
     end)
 
-    Container.Container.ChildRemoved:Connect(function()
+    Container.Container.ChildRemoved:Connect(function(child)
         for Index, Value in pairs (Notifications) do
             local Item: Frame = Value.Container;
             if (Item) then
+                if (child.Name == Value.Container.Name) then
+                    table.remove(Notifications, Index);
+                    return;
+                end
                 local PaddingItem = Config.PaddingItem or 5;
 
                 Tween(Item, { Position = UDim2.new(1, -20, 1, (-(65 + PaddingItem) * math.clamp(Index - 1, 1, math.huge))) }, 0.3);
@@ -70,7 +72,7 @@ function Library.new(Config: BasicProps)
 
     return setmetatable({
         Container = Container.Container,
-        Config = Config,
+        Config = Config or { MaxItems = math.huge, PaddingItem = 5 },
         Library = self,
         Notifications = Notifications,
     }, Library)
@@ -84,8 +86,9 @@ function Tween(instance: Instance, Properties, Duration: number, ...)
 end
 
 function CreateNotiItem(Library, Config: NotificationProps)
+    if (Library.Config.MaxItems and Library.Config.MaxItems == #Library.Notifications) then return end;
     local Container = CreateInstance('Frame', {
-        Name = 'Item',
+        Name = tostring(math.random(12507152871258)),
         AnchorPoint = Vector2.new(1, 0.5),
         Parent = Library.Container,
         BackgroundColor3 = Color3.fromRGB(22, 22, 22),
@@ -173,7 +176,7 @@ end
 function Library:addNoti(...)
     local Notification = CreateNotiItem(self, ...);
     table.insert(self.Notifications, Notification);
-
+    
     return Notification;
 end
 
