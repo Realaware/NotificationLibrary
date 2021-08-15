@@ -65,7 +65,7 @@ function Library.new(Config: BasicProps)
                 end
                 local PaddingItem = Config.PaddingItem or 5;
 
-                Tween(Item, { Position = UDim2.new(1, -20, 1, (-(65 + PaddingItem) * math.clamp(Index - 1, 1, math.huge))) }, 0.3);
+                Tween(Item, { Position = UDim2.new(1, -20, 1, (-(65 + PaddingItem) * math.clamp(Index - 1, 1, 100))) }, 0.3);
             end
         end
     end)
@@ -130,7 +130,7 @@ function CreateNotiItem(Library, Config: NotificationProps)
             TextXAlignment = Enum.TextXAlignment.Left,
             TextYAlignment = Enum.TextYAlignment.Top,
             Text = Config.Content,
-            TextSize = 14,
+            TextSize = 15,
         }, {
             CreateInstance('UIPadding', {
                 PaddingLeft = UDim.new(0, 5),
