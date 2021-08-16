@@ -27,6 +27,17 @@ type NotificationProps = {
     BarColor: Color3?,
 }
 
+function Library:RearrangeItems()
+    for Index, Value in pairs (self.Notifications) do
+        local Item: Frame = Value.Container;
+        if (Item) then
+            local PaddingItem = self.Config.PaddingItem or 5;
+
+            Tween(Item, { Position = UDim2.new(1, -20, 1,  (-(65 + PaddingItem) * Index )) }, 0.3);
+        end
+    end
+end
+
 function Library.new(Config: BasicProps)
     local Notifications = {};
     if (not Config) then
@@ -48,31 +59,16 @@ function Library.new(Config: BasicProps)
 
     Container.Container.ChildAdded:Connect(function()
         wait(.2);
-        for Index, Value in pairs (Notifications) do
-            local Item: Frame = Value.Container;
-            if (Item) then
-                local PaddingItem = Config.PaddingItem or 5;
-
-                Tween(Item, { Position = UDim2.new(1, -20, 1,  (-(65 + PaddingItem) * Index )) }, 0.3);
-            end
-        end
+        Library:RearrangeItems();
     end)
 
     Container.Container.ChildRemoved:Connect(function()
-        for Index, Value in pairs (Notifications) do
-            local Item: Frame = Value.Container;
-            if (Item) then
-                local PaddingItem = Config.PaddingItem or 5;
-
-                Tween(Item, { Position = UDim2.new(1, -20, 1, (-(65 + PaddingItem) * Index)) }, 0.3);
-            end
-        end
+        Library:RearrangeItems();
     end)
 
     return setmetatable({
         Container = Container.Container,
         Config = Config,
-        Library = self,
         Notifications = Notifications,
     }, Library)
 end
@@ -87,7 +83,7 @@ end
 function CreateNotiItem(Library, Config: NotificationProps)
     if (Library.Config.MaxItems and Library.Config.MaxItems == #Library.Notifications) then return end;
     local Container = CreateInstance('Frame', {
-        Name = tostring(math.random(1, 124512512)),
+        Name = 'Item',
         AnchorPoint = Vector2.new(1, 0.5),
         Parent = Library.Container,
         BackgroundColor3 = Color3.fromRGB(22, 22, 22),
@@ -158,16 +154,18 @@ function CreateNotiItem(Library, Config: NotificationProps)
     end
 
     wait(.05);
+    local key = Library:RandomString(10);
     table.insert(Library.Notifications, {
         Container = Container,
         Config = Config,
+        key = key,
     })
 
     Tween(Container, { Size = UDim2.new(unpack(TweenSize)) }, 0.3).Completed:Connect(function()
         Tween(Container.ProgressBar, { Size = UDim2.new(1, 0, 0, 2) }, Duration or 5).Completed:Connect(function()
             Tween(Container, { Size = UDim2.new(0, 0, 0, 65) }, 0.7).Completed:Connect(function()
                 for Index, Value in pairs (Library.Notifications) do
-                    if (Value.Container.Name == Container.Name) then
+                    if (Value.key == key) then
                         table.remove(Library.Notifications, Index);
                         break;
                     end
