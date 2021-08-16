@@ -61,10 +61,11 @@ function Library.new(Config: BasicProps)
             if (Item) then
                 if (child.Name == Item.Name) then
                     table.remove(Notifications, Index);
+                    return;
                 end
                 local PaddingItem = Config.PaddingItem or 5;
 
-                Tween(Item, { Position = UDim2.new(1, -20, 1, (-(65 + PaddingItem) * math.clamp(Index - 1, 1, 1000))) }, 0.3);
+                Tween(Item, { Position = UDim2.new(1, -20, 1, (-(65 + PaddingItem) * Index)) }, 0.3);
             end
         end
     end)
