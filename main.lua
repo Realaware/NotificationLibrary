@@ -1,4 +1,7 @@
-local Library = {};
+local Library = {
+    Notifications = {}
+};
+local Animations = {};
 Library.__index = Library;
 
 function CreateInstance(instance: string, Properties: table, Children: table) 
@@ -14,6 +17,8 @@ function CreateInstance(instance: string, Properties: table, Children: table)
 
     return Object;
 end
+
+
 
 type BasicProps = {
     MaxItems: number?,
@@ -39,7 +44,6 @@ function Library:RearrangeItems()
 end
 
 function Library.new(Config: BasicProps)
-    local Notifications = {};
     if (not Config) then
         Config = { MaxItems = math.huge, PaddingItem = 5 };
     end
@@ -69,7 +73,6 @@ function Library.new(Config: BasicProps)
     return setmetatable({
         Container = Container.Container,
         Config = Config,
-        Notifications = Notifications,
     }, Library)
 end
 
