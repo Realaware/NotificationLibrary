@@ -29,6 +29,9 @@ type NotificationProps = {
 
 function Library.new(Config: BasicProps)
     local Notifications = {};
+    if (not Config) then
+        Config = { MaxItems = math.huge, PaddingItem = 5 };
+    end
 
     local Container = CreateInstance('ScreenGui', {
         Name = 'Notification',
@@ -55,14 +58,10 @@ function Library.new(Config: BasicProps)
         end
     end)
 
-    Container.Container.ChildRemoved:Connect(function(child)
+    Container.Container.ChildRemoved:Connect(function()
         for Index, Value in pairs (Notifications) do
             local Item: Frame = Value.Container;
             if (Item) then
-                if (child.Name == Item.Name) then
-                    table.remove(Notifications, Index);
-                    return;
-                end
                 local PaddingItem = Config.PaddingItem or 5;
 
                 Tween(Item, { Position = UDim2.new(1, -20, 1, (-(65 + PaddingItem) * Index)) }, 0.3);
@@ -72,7 +71,7 @@ function Library.new(Config: BasicProps)
 
     return setmetatable({
         Container = Container.Container,
-        Config = Config or { MaxItems = math.huge, PaddingItem = 5 },
+        Config = Config,
         Library = self,
         Notifications = Notifications,
     }, Library)
@@ -159,25 +158,51 @@ function CreateNotiItem(Library, Config: NotificationProps)
     end
 
     wait(.05);
+    table.insert(Library.Notifications, {
+        Container = Container,
+        Config = Config,
+    })
+
     Tween(Container, { Size = UDim2.new(unpack(TweenSize)) }, 0.3).Completed:Connect(function()
         Tween(Container.ProgressBar, { Size = UDim2.new(1, 0, 0, 2) }, Duration or 5).Completed:Connect(function()
             Tween(Container, { Size = UDim2.new(0, 0, 0, 65) }, 0.7).Completed:Connect(function()
+                for Index, Value in pairs (Library.Notifications) do
+                    if (Value.Container.Name == Container.Name) then
+                        table.remove(Library.Notifications, Index);
+                        break;
+                    end
+                end
                 Container:Destroy();
             end)
         end)
     end)
-    
-    return {
-        Container = Container,
-        Config = Config
-    }
+
 end
 
 function Library:addNoti(...)
     local Notification = CreateNotiItem(self, ...);
-    table.insert(self.Notifications, Notification);
     
     return Notification;
 end
 
-return Library
+local charset = {}  do
+    for c = 48, 57  do table.insert(charset, string.char(c)) end
+    for c = 65, 90  do table.insert(charset, string.char(c)) end
+    for c = 97, 122 do table.insert(charset, string.char(c)) end
+end
+
+function Library:RandomString(length)
+    if not length or length <= 0 then return '' end
+    return self:RandomString(length - 1) .. charset[math.random(1, #charset)]
+end
+
+function Library:RandomTable(length)
+    local result = {};
+    for i = 1, length do
+        table.insert(result, self:RandomString(math.random(1, 10)));
+    end
+
+    return result;
+end
+
+return Library;
