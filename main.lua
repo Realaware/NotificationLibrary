@@ -1,5 +1,6 @@
 local Library = {
-    Notifications = {}
+    Notifications = {},
+    Config = {},
 };
 local Animations = {};
 Library.__index = Library;
