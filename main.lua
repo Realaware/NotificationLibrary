@@ -2,7 +2,6 @@ local Library = {
     Notifications = {},
     Config = {},
 };
-local Animations = {};
 Library.__index = Library;
 
 function CreateInstance(instance: string, Properties: table, Children: table) 
@@ -159,7 +158,7 @@ function CreateNotiItem(Library, Config: NotificationProps)
 
     wait(.05);
     local key = Library:RandomString(10);
-    table.insert(Library.Notifications, {
+    table.insert(Library.Notifications, 1, {
         Container = Container,
         Config = Config,
         key = key,
@@ -178,7 +177,6 @@ function CreateNotiItem(Library, Config: NotificationProps)
             end)
         end)
     end)
-
 end
 
 function Library:addNoti(...)
